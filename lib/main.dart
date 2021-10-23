@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_app/custom_theme.dart';
+import 'package:recipe_app/views/index.dart';
 
 import 'views/home_view.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: customLightTheme(context),
       darkTheme: customDarkTheme(context),
       themeMode: ThemeMode.system,
-      home: const HomeView(),
+      home: const LandingPage(),
     );
   }
 }

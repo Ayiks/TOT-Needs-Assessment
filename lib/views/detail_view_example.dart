@@ -1,9 +1,18 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:recipe_app/controller/bookmark_controller.dart';
+import 'package:recipe_app/model/recipe_model.dart';
+import 'package:recipe_app/views/video_player_view.dart';
 
 class DetialViewExample extends StatelessWidget {
-  const DetialViewExample({Key? key}) : super(key: key);
+   DetialViewExample({Key? key, required this.recipeModel,}) : super(key: key);
+
+   final BookmarkController _bookmarkController = BookmarkController();
+
+  
+
+final RecipeModel recipeModel;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +23,7 @@ class DetialViewExample extends StatelessWidget {
         child: Stack(
           children: [
             Image.network(
-              'https://images.unsplash.com/photo-1504297050568-910d24c426d3?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1287&q=80',
+              recipeModel.image,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               fit: BoxFit.cover,
@@ -36,10 +45,15 @@ class DetialViewExample extends StatelessWidget {
                 const Spacer(),
                  CircleAvatar(
                   backgroundColor: Colors.amber,
-                  child: Icon(
-                    Icons.play_arrow,
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    size: 60,
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> VideoPlayerView(videoUrl: recipeModel.video)));
+                    },
+                    child: Icon(
+                      Icons.play_arrow,
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      size: 60,
+                    ),
                   ),
                   radius: 40,
                 ),
@@ -71,7 +85,7 @@ class DetialViewExample extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Title here',
+                          recipeModel.title,
                           style: Theme.of(context)
                               .textTheme
                               .headline5!
@@ -80,7 +94,7 @@ class DetialViewExample extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              'category',
+                              recipeModel.category,
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                             const Spacer(),
@@ -92,7 +106,7 @@ class DetialViewExample extends StatelessWidget {
                               width: 5,
                             ),
                             Text(
-                              '5.0',
+                              '${recipeModel.rate}',
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ],
@@ -105,118 +119,34 @@ class DetialViewExample extends StatelessWidget {
                           color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.6),
                           child: Padding(
                             padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Wheat',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '270 gr',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 7,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Powdered Milk',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '1 sachet',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 7,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Powdered Milk',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '1 sachet',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 7,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Powdered Milk',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '1 sachet',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 7,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Powdered Milk',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '1 sachet',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyText1,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
+                            child:  ListView.separated(
+                              shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  Ingredent ingredient =
+                                      recipeModel.ingredents[index];
+                                  return Row(
+                                    children: [
+                                      Text(
+                                        ingredient.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1!
+                                            .copyWith(
+                                                fontWeight: FontWeight.bold),
+                                      ),
+                                      const Spacer(),
+                                      Text(
+                                        ingredient.quantity,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
+                                      ),
+                                    ],
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(),
+                                itemCount: recipeModel.ingredents.length)),
                         )
                       ],
                     ),
@@ -244,7 +174,9 @@ class DetialViewExample extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () async{
+                         await _bookmarkController.addBookmark(recipeModel);
+                      },
                       child: const Padding(
                         padding: EdgeInsets.all(12.0),
                         child: Icon(Icons.bookmark_border_outlined),

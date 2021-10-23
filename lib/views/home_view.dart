@@ -137,7 +137,7 @@ class _HomeViewState extends State<HomeView> {
                       return GestureDetector(
                         onTap: () {
                           //TODO: PASS RECIPE DATA TO DETAILS VIEW
-                      
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> DetialViewExample(recipeModel: model)));
                         },
                         child: Container(
                           margin: const EdgeInsets.only(right: 10),
@@ -167,7 +167,7 @@ class _HomeViewState extends State<HomeView> {
                                         children: [
                                           //TODO: PASS THE RIGHT TITLE DATA TO TEXT WIDGET
                                           Text(
-                                            "recipe title here",
+                                            model.title,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headline5!
@@ -210,34 +210,12 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       );
                     },
-                    itemCount:1000, //TODO: PASS THE RIGHT LENGTH TO ITEM COUNT
+                    itemCount:snapshot.data!.length, //TODO: PASS THE RIGHT LENGTH TO ITEM COUNT
                   ),
                 );
               })
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        currentIndex: _currentIndex,
-        onTap: (value) => setState(() {
-          _currentIndex = value;
-        }),
-        selectedItemColor: Colors.amber,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: false,
-        showSelectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark_border_outlined), label: 'Favorite'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.notifications_outlined), label: 'Notification'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle_outlined), label: 'Account')
-        ],
-      ),
-    );
+      );
   }
 }

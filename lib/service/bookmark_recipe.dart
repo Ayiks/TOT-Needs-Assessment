@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:path/path.dart';
 import 'package:recipe_app/model/recipe_model.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -14,7 +15,10 @@ class BookmarkService {
   String columnVideo = 'video';
   String columnIngredents = 'ingredents';
 
-  Future open(String path) async {
+  Future open() async {
+    String databasePath = await getDatabasesPath();
+    String path = join(databasePath, 'food.db');
+    
     db = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
       await db.execute('''
